@@ -1,6 +1,6 @@
 {
 	"ID": "0524e0c2-90f6-498c-b474-e76e6e6c439c",
-	"Positions":
+	"TilePositions":
 	[
 		{ "x": 2, "y": -2 },
 		{ "x": 1, "y": -2 },
@@ -18,5 +18,18 @@
 		{ "x": 2, "y": 1 },
 		{ "x": 2, "y": 0 },
 		{ "x": 2, "y": -1 }
+	],
+	"Quizzes":
+	[
+		{
+			"ID": "80cb8d34-2793-44b6-a797-217ce3c9587d",
+			"Type": "Question",
+			"TileIndexes": [0, 8]
+		},
+		{
+			"ID": "085e0503-f3b3-49d8-8d2d-6f833ce403d3",
+			"Type": "Flag",
+			"TileIndexes": [4, 12]
+		}
 	]
 }

@@ -1,30 +1,69 @@
-using UnityEngine;
-using System.IO;
+using System.Collections.Generic;
 using Newtonsoft.Json;
+using UnityEngine;
 
-public class Test : MonoBehaviour
+namespace Board
 {
-	void Start()
+	public class Test : MonoBehaviour
 	{
-		var json = File.ReadAllText(Application.dataPath + "/Board/BoardLayout1.json");
-		Debug.Log(json);
-
-		var boardLayout = JsonConvert.DeserializeObject<BoardLayout>(json);
-		Debug.Log(boardLayout.ID);
-		Debug.Log(boardLayout.Positions.Count);
-
-		foreach (var gridPosition in boardLayout.Positions)
+		void Start()
 		{
-			Debug.Log(gridPosition);
+			// Get board layout.
+			Debug.Log(boardLayoutFile);
 
-			//Vector3 worldPosition = (Vector3Int)gridPosition;
-			var worldPosition = new Vector3(gridPosition.x, 0, gridPosition.y) * tileSize;
+			var boardLayoutFileContents = boardLayoutFile.text;
+			var boardLayout = JsonConvert.DeserializeObject<BoardLayout>(boardLayoutFileContents);
 
-			Instantiate(tile, worldPosition, Quaternion.identity);
+			Debug.Log(boardLayout.ID);
+
+			// Spawn tiles.
+			var tileInstances = new List<GameObject>();
+
+			foreach (var gridPosition in boardLayout.TilePositions)
+			{
+				Debug.Log(gridPosition);
+
+				//Vector3 worldPosition = (Vector3Int)gridPosition;
+				var worldPosition = new Vector3(gridPosition.x, 0.0f, gridPosition.y) * gridCellSize;
+				var tileInstance = Instantiate(tile, worldPosition, Quaternion.identity);
+
+				//GameObject tileInstance = GameObject.CreatePrimitive(PrimitiveType.Cube);
+				//tileInstance.transform.position = worldPosition;
+
+				tileInstances.Add(tileInstance);
+			}
+
+			var colorTable = new Dictionary<QuizType, Color>
+			{
+				{ QuizType.Question, Color.red },
+				{ QuizType.Flag, Color.green }
+			};
+
+			// Specialize tiles.
+			foreach (var quiz in boardLayout.Quizzes)
+			{
+				Debug.Log(quiz.ID);
+				Debug.Log(quiz.Type);
+
+				var color = colorTable[quiz.Type];
+
+				foreach (var tileIndex in quiz.TileIndexes)
+				{
+					Debug.Log(tileIndex);
+
+					var tileInstance = tileInstances[tileIndex];
+					//var tileRenderer = tileInstance.GetComponent<Renderer>();
+					//var tileRenderer = tileInstance.transform.GetChild(0).gameObject.GetComponent<Renderer>();
+					var tileModel = tileInstance.transform.GetChild(0).gameObject;
+					var tileRenderer = tileModel.GetComponent<Renderer>();
+
+					tileRenderer.material.color = color;
+				}
+			}
 		}
-	}
 
-	public float tileSize;
-	public GameObject tile;
-	public TextAsset file;
+		public TextAsset boardLayoutFile;
+		public float gridCellSize;
+		public GameObject tile;
+	}
 }

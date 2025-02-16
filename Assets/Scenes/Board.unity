@@ -304,9 +304,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e02daf74c87846a38089aef98fa8c950, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tileSize: 0.5
+  boardLayoutFile: {fileID: 4900000, guid: 6842ebe8fe8c472b887bd5665c65cdc1, type: 3}
+  gridCellSize: 0.6
   tile: {fileID: 6008838703116962831, guid: e86a64a168547422db6122e2668271de, type: 3}
-  file: {fileID: 0}
 --- !u!1 &410087039
 GameObject:
   m_ObjectHideFlags: 0
