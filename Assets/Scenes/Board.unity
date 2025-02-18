@@ -503,6 +503,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 465a9dcfbf52436890decc95b7a58715, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gameBoardLayoutFile: {fileID: 4900000, guid: 6842ebe8fe8c472b887bd5665c65cdc1, type: 3}
   gameBoard: {fileID: 389359014}
   playerController: {fileID: 1081911996}
 --- !u!4 &902024078
@@ -550,7 +551,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gameBoard: {fileID: 389359014}
-  marker: {fileID: 5517808263013071344, guid: 3e7cb15866b2044c4821d261c3bfeeb2, type: 3}
+  playerMarkerAsset: {fileID: 5517808263013071344, guid: 3e7cb15866b2044c4821d261c3bfeeb2,
+    type: 3}
   tileStepDuration: 0.3
 --- !u!4 &1081911997
 Transform:

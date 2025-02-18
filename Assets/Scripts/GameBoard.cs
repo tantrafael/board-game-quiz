@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Newtonsoft.Json;
 using UnityEngine;
+using UnityEngine.Assertions;
 
 namespace BoardGameQuiz
 {
@@ -12,14 +13,26 @@ namespace BoardGameQuiz
 
 		private GameBoardLayout gameBoardLayout;
 
+		/*
 		public void Initialize()
 		{
 			gameBoardLayout = ConstructGameBoard(gameBoardLayoutFile, gridCellSize, tile);
+		}
+		*/
+		public void Initialize(GameBoardLayout gameBoardLayout)
+		{
+			this.gameBoardLayout = gameBoardLayout;
+
+			ConstructGameBoard(gameBoardLayout, gridCellSize, tile);
 		}
 
 		public Vector3 GetWorldPosition(int tileIndex)
 		{
 			// TODO: Assert gameBoardLayout exists and tileIndex within range.
+			Assert.IsNotNull(gameBoardLayout);
+			Assert.IsNotNull(gameBoardLayout.TilePositions);
+			Assert.IsTrue(tileIndex < gameBoardLayout.TilePositions.Count);
+
 			var gridPosition = gameBoardLayout.TilePositions[tileIndex];
 			var worldPosition = GetWorldPosition(gridPosition, gridCellSize);
 
@@ -40,6 +53,7 @@ namespace BoardGameQuiz
 			return worldPosition;
 		}
 
+		/*
 		private GameBoardLayout ConstructGameBoard(TextAsset gameBoardLayoutFile, float gridCellSize, GameObject tile)
 		{
 			var gameBoardLayout = GetGameBoardLayout(gameBoardLayoutFile);
@@ -48,7 +62,14 @@ namespace BoardGameQuiz
 
 			return gameBoardLayout;
 		}
+		*/
+		private void ConstructGameBoard(GameBoardLayout gameBoardLayout, float gridCellSize, GameObject tile)
+		{
+			var tiles = ConstructTiles(gameBoardLayout, gridCellSize, tile);
+			SpecializeTiles(gameBoardLayout, tiles);
+		}
 
+		/*
 		private GameBoardLayout GetGameBoardLayout(TextAsset gameBoardLayoutFile)
 		{
 			var gameBoardLayoutFileContents = gameBoardLayoutFile.text;
@@ -56,6 +77,7 @@ namespace BoardGameQuiz
 
 			return gameBoardLayout;
 		}
+		*/
 
 		private List<GameObject> ConstructTiles(GameBoardLayout gameBoardLayout, float gridCellSize, GameObject tile)
 		{
