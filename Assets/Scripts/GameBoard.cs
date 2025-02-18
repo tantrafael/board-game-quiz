@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using Newtonsoft.Json;
 using UnityEngine;
@@ -7,38 +6,76 @@ namespace BoardGameQuiz
 {
 	public class GameBoard : MonoBehaviour
 	{
-		public TextAsset boardLayoutFile;
+		public TextAsset gameBoardLayoutFile;
 		public float gridCellSize;
 		public GameObject tile;
 
+		private GameBoardLayout gameBoardLayout;
+
+		/*
 		void Start()
 		{
-			ConstructBoard(boardLayoutFile, gridCellSize, tile);
+			gameBoardLayout = ConstructGameBoard(gameBoardLayoutFile, gridCellSize, tile);
 		}
+		*/
 
-		void ConstructBoard(TextAsset boardLayoutFile, float gridCellSize, GameObject tile)
+		public void Initialize()
 		{
-			var boardLayout = GetBoardLayout(boardLayoutFile);
-			var tiles = ConstructTiles(boardLayout, gridCellSize, tile);
-			SpecializeTiles(boardLayout, tiles);
+			gameBoardLayout = ConstructGameBoard(gameBoardLayoutFile, gridCellSize, tile);
 		}
 
-		GameBoardLayout GetBoardLayout(TextAsset boardLayoutFile)
+		/*
+		public Vector3 GetStartPosition()
 		{
-			var boardLayoutFileContents = boardLayoutFile.text;
-			var boardLayout = JsonConvert.DeserializeObject<GameBoardLayout>(boardLayoutFileContents);
+			// TODO: Assert existing tile positions.
+			var startTilePosition = gameBoardLayout.TilePositions[0];
+			var startWorldPosition = GetWorldPosition(startTilePosition, gridCellSize);
 
-			return boardLayout;
+			return startWorldPosition;
+		}
+		*/
+
+		public Vector3 GetWorldPosition(int tileIndex)
+		{
+			var gridPosition = gameBoardLayout.TilePositions[tileIndex];
+			var worldPosition = GetWorldPosition(gridPosition, gridCellSize);
+
+			return worldPosition;
 		}
 
-		List<GameObject> ConstructTiles(GameBoardLayout gameBoardLayout, float gridCellSize, GameObject tile)
+		private Vector3 GetWorldPosition(Vector2Int gridPosition, float gridCellSize)
+		{
+			var worldPosition = new Vector3(gridPosition.x, 0.0f, gridPosition.y) * gridCellSize;
+
+			return worldPosition;
+		}
+
+		private GameBoardLayout ConstructGameBoard(TextAsset gameBoardLayoutFile, float gridCellSize, GameObject tile)
+		{
+			var gameBoardLayout = GetGameBoardLayout(gameBoardLayoutFile);
+			var tiles = ConstructTiles(gameBoardLayout, gridCellSize, tile);
+			SpecializeTiles(gameBoardLayout, tiles);
+
+			return gameBoardLayout;
+		}
+
+		private GameBoardLayout GetGameBoardLayout(TextAsset gameBoardLayoutFile)
+		{
+			var gameBoardLayoutFileContents = gameBoardLayoutFile.text;
+			var gameBoardLayout = JsonConvert.DeserializeObject<GameBoardLayout>(gameBoardLayoutFileContents);
+
+			return gameBoardLayout;
+		}
+
+		private List<GameObject> ConstructTiles(GameBoardLayout gameBoardLayout, float gridCellSize, GameObject tile)
 		{
 			var tiles = new List<GameObject>();
 
 			foreach (var gridPosition in gameBoardLayout.TilePositions)
 			{
 				//Vector3 worldPosition = (Vector3Int)gridPosition;
-				var worldPosition = new Vector3(gridPosition.x, 0.0f, gridPosition.y) * gridCellSize;
+				//var worldPosition = new Vector3(gridPosition.x, 0.0f, gridPosition.y) * gridCellSize;
+				var worldPosition = GetWorldPosition(gridPosition, gridCellSize);
 				var tileInstance = Instantiate(tile, worldPosition, Quaternion.identity);
 				tiles.Add(tileInstance);
 			}
@@ -46,7 +83,7 @@ namespace BoardGameQuiz
 			return tiles;
 		}
 
-		void SpecializeTiles(GameBoardLayout gameBoardLayout, List<GameObject> tileInstances)
+		private void SpecializeTiles(GameBoardLayout gameBoardLayout, List<GameObject> tileInstances)
 		{
 			var colorTable = new Dictionary<QuizType, Color>
 			{
@@ -63,6 +100,19 @@ namespace BoardGameQuiz
 			}
 		}
 
+		private QuizType GetQuizType(string quizID)
+		{
+			var quizDataFilePath = $"QuizData/{quizID}";
+			var quizDataFile = Resources.Load<TextAsset>(quizDataFilePath);
+
+			// TODO: Handle missing file.
+			var quizDataFileContents = quizDataFile.text;
+			var quiz = JsonConvert.DeserializeObject<Quiz>(quizDataFileContents);
+			var quizType = (QuizType)int.Parse(quiz.QuestionType);
+
+			return quizType;
+		}
+
 		void SpecializeQuizTiles(List<GameObject> tileInstances, QuizPlacement quizPlacement, Color color)
 		{
 			foreach (var tileIndex in quizPlacement.TileIndexes)
@@ -75,19 +125,6 @@ namespace BoardGameQuiz
 
 				tileRenderer.material.color = color;
 			}
-		}
-
-		QuizType GetQuizType(string quizID)
-		{
-			var quizDataFilePath = $"QuizData/{quizID}";
-			var quizDataFile = Resources.Load<TextAsset>(quizDataFilePath);
-
-			// TODO: Handle missing file.
-			var quizDataFileContents = quizDataFile.text;
-			var quiz = JsonConvert.DeserializeObject<Quiz>(quizDataFileContents);
-			var quizType = (QuizType)int.Parse(quiz.QuestionType);
-
-			return quizType;
 		}
 	}
 }
