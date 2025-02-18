@@ -7,11 +7,19 @@ namespace BoardGameQuiz
 		public GameBoard gameBoard;
 		public PlayerController playerController;
 
-		void Start()
+		public void Start()
 		{
 			// TODO: Assert game board and player controller existence.
 			gameBoard.Initialize();
 			playerController.Initialize();
+		}
+
+		public void Update()
+		{
+			if (Input.GetButtonDown("Fire1"))
+			{
+				playerController.Move(3);
+			}
 		}
 	}
 }

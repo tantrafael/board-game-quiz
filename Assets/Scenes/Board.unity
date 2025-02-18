@@ -485,7 +485,7 @@ GameObject:
   - component: {fileID: 902024078}
   - component: {fileID: 902024077}
   m_Layer: 0
-  m_Name: Foo
+  m_Name: GameController
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -551,6 +551,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gameBoard: {fileID: 389359014}
   marker: {fileID: 5517808263013071344, guid: 3e7cb15866b2044c4821d261c3bfeeb2, type: 3}
+  tileStepDuration: 0.3
 --- !u!4 &1081911997
 Transform:
   m_ObjectHideFlags: 0
@@ -647,6 +648,6 @@ SceneRoots:
   - {fileID: 410087041}
   - {fileID: 832575519}
   - {fileID: 5152446221303807193}
+  - {fileID: 902024078}
   - {fileID: 389359013}
   - {fileID: 1081911997}
-  - {fileID: 902024078}

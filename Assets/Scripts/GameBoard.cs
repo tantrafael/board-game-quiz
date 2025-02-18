@@ -17,23 +17,20 @@ namespace BoardGameQuiz
 			gameBoardLayout = ConstructGameBoard(gameBoardLayoutFile, gridCellSize, tile);
 		}
 
-		/*
-		public Vector3 GetStartPosition()
-		{
-			// TODO: Assert existing tile positions.
-			var startTilePosition = gameBoardLayout.TilePositions[0];
-			var startWorldPosition = GetWorldPosition(startTilePosition, gridCellSize);
-
-			return startWorldPosition;
-		}
-		*/
-
 		public Vector3 GetWorldPosition(int tileIndex)
 		{
+			// TODO: Assert gameBoardLayout exists and tileIndex within range.
 			var gridPosition = gameBoardLayout.TilePositions[tileIndex];
 			var worldPosition = GetWorldPosition(gridPosition, gridCellSize);
 
 			return worldPosition;
+		}
+
+		public int GetTotalTileCount()
+		{
+			var totalTileCount = gameBoardLayout.TilePositions.Count;
+
+			return totalTileCount;
 		}
 
 		private Vector3 GetWorldPosition(Vector2Int gridPosition, float gridCellSize)
