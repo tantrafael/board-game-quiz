@@ -9,7 +9,7 @@ namespace BoardGameQuiz
 	{
 		public TextAsset gameBoardLayoutFile;
 		public GameBoard gameBoard;
-		public PlayerController playerController;
+		public PlayingMarkerManager playingMarkerManager;
 
 		private GameState gameState;
 
@@ -39,35 +39,34 @@ namespace BoardGameQuiz
 			var playerState = new PlayerState
 			{
 				ID = "d1589de2-d929-418a-acec-13552a6ed1a4",
-				TileIndex = 0,
+				//TileIndex = 0,
+				StepCount = 0,
 				Score = 0
 			};
 
 			Assert.IsNotNull(gameState.PlayerStates);
 			gameState.PlayerStates.Add(playerState);
 
-			Assert.IsNotNull(playerController);
+			Assert.IsNotNull(playingMarkerManager);
 			//playerController.Initialize();
-			playerController.AddPlayer(playerState);
+			playingMarkerManager.AddPlayingMarker(playerState);
 		}
 
 		public void Update()
 		{
 			if (Input.GetButtonDown("Fire1"))
 			{
-				//playerController.Move(3);
-
 				// Update state.
 				var playerID = 0;
 				var playerState = gameState.PlayerStates[playerID];
-				var currentTileIndex = playerState.TileIndex;
 				var stepCount = Random.Range(1, 6);
-				var tileCount = gameState.GameBoardLayout.TilePositions.Count;
-				var updatedTileIndex = (currentTileIndex + stepCount) % tileCount;
-				playerState.TileIndex = updatedTileIndex;
+				Debug.Log(stepCount);
+
+				// TODO: Create updated state.
+				playerState.StepCount += stepCount;
 
 				// Update presentation.
-				playerController.UpdatePlayerMarkers(gameState.PlayerStates);
+				playingMarkerManager.UpdatePlayingMarkers(gameState.PlayerStates);
 			}
 		}
 

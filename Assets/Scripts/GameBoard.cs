@@ -7,23 +7,16 @@ namespace BoardGameQuiz
 {
 	public class GameBoard : MonoBehaviour
 	{
-		public TextAsset gameBoardLayoutFile;
 		public float gridCellSize;
-		public GameObject tile;
+		public GameObject tileAsset;
 
 		private GameBoardLayout gameBoardLayout;
 
-		/*
-		public void Initialize()
-		{
-			gameBoardLayout = ConstructGameBoard(gameBoardLayoutFile, gridCellSize, tile);
-		}
-		*/
 		public void Initialize(GameBoardLayout gameBoardLayout)
 		{
 			this.gameBoardLayout = gameBoardLayout;
 
-			ConstructGameBoard(gameBoardLayout, gridCellSize, tile);
+			ConstructGameBoard(gameBoardLayout, gridCellSize, tileAsset);
 		}
 
 		public Vector3 GetWorldPosition(int tileIndex)
@@ -53,31 +46,11 @@ namespace BoardGameQuiz
 			return worldPosition;
 		}
 
-		/*
-		private GameBoardLayout ConstructGameBoard(TextAsset gameBoardLayoutFile, float gridCellSize, GameObject tile)
-		{
-			var gameBoardLayout = GetGameBoardLayout(gameBoardLayoutFile);
-			var tiles = ConstructTiles(gameBoardLayout, gridCellSize, tile);
-			SpecializeTiles(gameBoardLayout, tiles);
-
-			return gameBoardLayout;
-		}
-		*/
 		private void ConstructGameBoard(GameBoardLayout gameBoardLayout, float gridCellSize, GameObject tile)
 		{
 			var tiles = ConstructTiles(gameBoardLayout, gridCellSize, tile);
 			SpecializeTiles(gameBoardLayout, tiles);
 		}
-
-		/*
-		private GameBoardLayout GetGameBoardLayout(TextAsset gameBoardLayoutFile)
-		{
-			var gameBoardLayoutFileContents = gameBoardLayoutFile.text;
-			var gameBoardLayout = JsonConvert.DeserializeObject<GameBoardLayout>(gameBoardLayoutFileContents);
-
-			return gameBoardLayout;
-		}
-		*/
 
 		private List<GameObject> ConstructTiles(GameBoardLayout gameBoardLayout, float gridCellSize, GameObject tile)
 		{

@@ -304,9 +304,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e02daf74c87846a38089aef98fa8c950, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gameBoardLayoutFile: {fileID: 4900000, guid: 6842ebe8fe8c472b887bd5665c65cdc1, type: 3}
   gridCellSize: 0.6
-  tile: {fileID: 6008838703116962831, guid: e86a64a168547422db6122e2668271de, type: 3}
+  tileAsset: {fileID: 6008838703116962831, guid: e86a64a168547422db6122e2668271de,
+    type: 3}
 --- !u!1 &410087039
 GameObject:
   m_ObjectHideFlags: 0
@@ -505,7 +505,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gameBoardLayoutFile: {fileID: 4900000, guid: 6842ebe8fe8c472b887bd5665c65cdc1, type: 3}
   gameBoard: {fileID: 389359014}
-  playerController: {fileID: 1081911996}
+  playingMarkerManager: {fileID: 1081911996}
 --- !u!4 &902024078
 Transform:
   m_ObjectHideFlags: 0
@@ -532,7 +532,7 @@ GameObject:
   - component: {fileID: 1081911997}
   - component: {fileID: 1081911996}
   m_Layer: 0
-  m_Name: PlayerController
+  m_Name: PlayingMarkerManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
