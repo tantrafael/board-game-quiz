@@ -1,4 +1,5 @@
 using UnityEngine;
+using DG.Tweening;
 
 namespace BoardGameQuiz
 {
@@ -9,14 +10,6 @@ namespace BoardGameQuiz
 
 		private GameObject markerInstance;
 		private int tileIndex;
-
-		/*
-		void Start()
-		{
-			var startPosition = gameBoard.GetStartPosition();
-			var markerInstance = Instantiate(marker, startPosition, Quaternion.identity);
-		}
-		*/
 
 		public void Initialize()
 		{
@@ -32,7 +25,9 @@ namespace BoardGameQuiz
 			var destinationPosition = gameBoard.GetWorldPosition(destinationTileIndex);
 
 			// TODO: Assert marker instance existence.
-			markerInstance.transform.position = destinationPosition;
+			//markerInstance.transform.position = destinationPosition;
+			DOTween.To(() => markerInstance.transform.position, x => markerInstance.transform.position = x, destinationPosition, 4.0f);
+			//markerInstance.transform.DOMove(destinationPosition, 4.0f);
 
 			return destinationTileIndex;
 		}

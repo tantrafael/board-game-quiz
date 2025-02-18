@@ -12,13 +12,6 @@ namespace BoardGameQuiz
 
 		private GameBoardLayout gameBoardLayout;
 
-		/*
-		void Start()
-		{
-			gameBoardLayout = ConstructGameBoard(gameBoardLayoutFile, gridCellSize, tile);
-		}
-		*/
-
 		public void Initialize()
 		{
 			gameBoardLayout = ConstructGameBoard(gameBoardLayoutFile, gridCellSize, tile);
