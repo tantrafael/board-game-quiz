@@ -46,8 +46,12 @@ namespace BoardGameQuiz
 
 			foreach (var gameState in gameStateHistory)
 			{
-				Debug.Log(gameState.ID);
+				var (playerID, playerState) = gameState.PlayerStateTable.First();
+				var stepCount = playerState.StepCount;
+				Debug.Log($"Game state ID: {gameState.ID}, Player ID: {playerID}, Step count: {stepCount}");
 			}
+
+			Debug.Log("--------------------------------------------------------------------------------");
 		}
 
 		private GameState PerformGameLogic(GameState inGameState)

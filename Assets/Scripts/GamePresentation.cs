@@ -18,12 +18,12 @@ namespace BoardGameQuiz
 			this.playingPieceMover = playingPieceMover;
 
 			InitializeGameBoard(gameState);
-			InitializePlayingPieces(gameState);
+			InitializePlayingPieceMover(gameState);
 		}
 
 		public void Update(GameState gameState)
 		{
-			UpdatePlayingPieces(gameState);
+			UpdatePlayingPieceMover(gameState);
 		}
 
 		private void InitializeGameBoard(GameState gameState)
@@ -33,7 +33,7 @@ namespace BoardGameQuiz
 			gameBoard.Initialize(gameBoardLayout);
 		}
 
-		private void InitializePlayingPieces(GameState gameState)
+		private void InitializePlayingPieceMover(GameState gameState)
 		{
 			foreach (var (playerID, playerState) in gameState.PlayerStateTable)
 			{
@@ -41,7 +41,7 @@ namespace BoardGameQuiz
 			}
 		}
 
-		private void UpdatePlayingPieces(GameState gameState)
+		private void UpdatePlayingPieceMover(GameState gameState)
 		{
 			var playerStateTable = gameState.PlayerStateTable;
 

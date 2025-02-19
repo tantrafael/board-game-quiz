@@ -14,6 +14,7 @@ namespace BoardGameQuiz
 
 		public void Start()
 		{
+			// Mock users.
 			var userIDs = new List<string>
 			{
 				"d1589de2-d929-418a-acec-13552a6ed1a"

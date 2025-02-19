@@ -5,23 +5,14 @@ using UnityEngine.Assertions;
 
 namespace BoardGameQuiz
 {
-	public class PlayingPieceLocalState
-	{
-		//public int TileIndex { get; set; }
-		public int StepCount { get; set; }
-		public GameObject PlayingPiece { get; set; }
-	}
-
 	public class PlayingPieceMover : MonoBehaviour
 	{
 		public GameBoard gameBoard;
 		public GameObject playingPieceAsset;
 		public float tileStepDuration;
 
-		//private List<GameObject> playingMarkers = new();
-		private Dictionary<string, PlayingPieceLocalState> playingPieceTable = new();
+		private Dictionary<string, PlayingPiecePresentationState> playingPieceTable = new();
 
-		//public void AddPlayingPiece(PlayerState playerState)
 		public void AddPlayingPiece(string playerID, PlayerState playerState)
 		{
 			var playerTileIndex = playerState.StepCount % gameBoard.GetTotalTileCount();
@@ -31,67 +22,57 @@ namespace BoardGameQuiz
 			//Assert.IsNotNull(playingMarkers);
 			//playingMarkers.Add(playingMarker);
 
-			var playingPieceLocalState = new PlayingPieceLocalState
+			var playingPiecePresentationState = new PlayingPiecePresentationState
 			{
 				StepCount = playerState.StepCount,
 				PlayingPiece = playingPiece
 			};
 
 			Assert.IsNotNull(playingPieceTable);
-			playingPieceTable.Add(playerID, playingPieceLocalState);
+			playingPieceTable.Add(playerID, playingPiecePresentationState);
 		}
 
 		public void UpdatePlayingPieces(Dictionary<string, PlayerState> playerStateTable)
 		{
-			//foreach (var playerStateTableElement in playerStateTable)
 			foreach (var (playerID, playerState) in playerStateTable)
 			{
-				//UpdatePlayingPiece(playerStateTableElement);
 				UpdatePlayingPiece(playerID, playerState);
 			}
 		}
 
-		//private void UpdatePlayingPiece(KeyValuePair<string, PlayerState> playerStateTableElement)
 		private void UpdatePlayingPiece(string playerID, PlayerState playerState)
 		{
-			//var playerID = playerStateTableElement.Key;
-			//var playerState = playerStateTableElement.Value;
-			var playingPieceLocalState = playingPieceTable[playerID];
-			var deltaStepCount = playerState.StepCount - playingPieceLocalState.StepCount;
-			var isUpToDate = (deltaStepCount == 0);
+			var isCorrectlyMoved = IsCorrectlyMoved(playerID, playerState);
 
-			if (isUpToDate)
+			if (isCorrectlyMoved)
 			{
 				return;
 			}
 
-			var playingPiece = playingPieceLocalState.PlayingPiece;
-			var gameBoardTileCount = gameBoard.GetTotalTileCount();
-			var startTileIndex = playingPieceLocalState.StepCount % gameBoardTileCount;
-			var tileIndexSequence = GetIndexSequence(startTileIndex, deltaStepCount, gameBoardTileCount);
-
-			Animate(playingPiece, tileIndexSequence, gameBoard, tileStepDuration);
-
-			//return destinationTileIndex;
-
-			// TODO: Create new local state.
-			playingPieceLocalState.StepCount = playerState.StepCount;
+			MovePlayingPiece(playerID, playerState);
 		}
 
-		private void MovePlayingPiece(PlayingPieceLocalState playingPieceLocalState, PlayerState playerState)
+		private bool IsCorrectlyMoved(string playerID, PlayerState playerState)
 		{
-			var playingPiece = playingPieceLocalState.PlayingPiece;
+			var playingPiecePresentationState = playingPieceTable[playerID];
+			var deltaStepCount = playerState.StepCount - playingPiecePresentationState.StepCount;
+			var isUpToDate = (deltaStepCount == 0);
+
+			return isUpToDate;
+		}
+
+		private void MovePlayingPiece(string playerID, PlayerState playerState)
+		{
+			var playingPiecePresentationState = playingPieceTable[playerID];
+			var playingPiece = playingPiecePresentationState.PlayingPiece;
+			var deltaStepCount = playerState.StepCount - playingPiecePresentationState.StepCount;
 			var gameBoardTileCount = gameBoard.GetTotalTileCount();
-			var deltaStepCount = playerState.StepCount - playingPieceLocalState.StepCount;
-			var startTileIndex = playingPieceLocalState.StepCount % gameBoardTileCount;
+			var startTileIndex = playingPiecePresentationState.StepCount % gameBoardTileCount;
 			var tileIndexSequence = GetIndexSequence(startTileIndex, deltaStepCount, gameBoardTileCount);
 
 			Animate(playingPiece, tileIndexSequence, gameBoard, tileStepDuration);
 
-			//return destinationTileIndex;
-
-			// TODO: Create new local state.
-			playingPieceLocalState.StepCount = playerState.StepCount;
+			playingPiecePresentationState.StepCount = playerState.StepCount;
 		}
 
 		private List<int> GetIndexSequence(int startIndex, int stepCount, int totalIndexCount)
