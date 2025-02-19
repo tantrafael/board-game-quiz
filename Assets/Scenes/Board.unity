@@ -505,7 +505,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gameBoardLayoutFile: {fileID: 4900000, guid: 6842ebe8fe8c472b887bd5665c65cdc1, type: 3}
   gameBoard: {fileID: 389359014}
-  playingMarkerManager: {fileID: 1081911996}
+  playingPieceMover: {fileID: 1081911996}
 --- !u!4 &902024078
 Transform:
   m_ObjectHideFlags: 0
@@ -532,7 +532,7 @@ GameObject:
   - component: {fileID: 1081911997}
   - component: {fileID: 1081911996}
   m_Layer: 0
-  m_Name: PlayingMarkerManager
+  m_Name: PlayingPieceMover
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -551,7 +551,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gameBoard: {fileID: 389359014}
-  playerMarkerAsset: {fileID: 5517808263013071344, guid: 3e7cb15866b2044c4821d261c3bfeeb2,
+  playingPieceAsset: {fileID: 5517808263013071344, guid: 3e7cb15866b2044c4821d261c3bfeeb2,
     type: 3}
   tileStepDuration: 0.3
 --- !u!4 &1081911997
