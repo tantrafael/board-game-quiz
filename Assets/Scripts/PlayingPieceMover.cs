@@ -43,16 +43,19 @@ namespace BoardGameQuiz
 
 		public void UpdatePlayingPieces(Dictionary<string, PlayerState> playerStateTable)
 		{
-			foreach (var playerStateTableElement in playerStateTable)
+			//foreach (var playerStateTableElement in playerStateTable)
+			foreach (var (playerID, playerState) in playerStateTable)
 			{
-				UpdatePlayingPiece(playerStateTableElement);
+				//UpdatePlayingPiece(playerStateTableElement);
+				UpdatePlayingPiece(playerID, playerState);
 			}
 		}
 
-		private void UpdatePlayingPiece(KeyValuePair<string, PlayerState> playerStateTableElement)
+		//private void UpdatePlayingPiece(KeyValuePair<string, PlayerState> playerStateTableElement)
+		private void UpdatePlayingPiece(string playerID, PlayerState playerState)
 		{
-			var playerID = playerStateTableElement.Key;
-			var playerState = playerStateTableElement.Value;
+			//var playerID = playerStateTableElement.Key;
+			//var playerState = playerStateTableElement.Value;
 			var playingPieceLocalState = playingPieceTable[playerID];
 			var deltaStepCount = playerState.StepCount - playingPieceLocalState.StepCount;
 			var isUpToDate = (deltaStepCount == 0);
