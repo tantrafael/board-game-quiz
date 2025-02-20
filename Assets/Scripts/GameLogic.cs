@@ -61,8 +61,7 @@ namespace BoardGameQuiz
 
 		private GameBoardLayout CreateGameBoardLayout(TextAsset gameBoardLayoutFile)
 		{
-			var gameBoardLayoutFileContents = gameBoardLayoutFile.text;
-			var gameBoardLayout = JsonConvert.DeserializeObject<GameBoardLayout>(gameBoardLayoutFileContents);
+			var gameBoardLayout = JsonConvert.DeserializeObject<GameBoardLayout>(gameBoardLayoutFile.text);
 
 			return gameBoardLayout;
 		}
@@ -130,7 +129,7 @@ namespace BoardGameQuiz
 
 			if (quizPlacement != null)
 			{
-				Debug.Log($"Quiz: {quizPlacement.ID}");
+				Debug.Log($"Active quiz: {quizPlacement.ID}");
 				updatedGameState.ActiveQuiz = quizPlacement.ID;
 			}
 

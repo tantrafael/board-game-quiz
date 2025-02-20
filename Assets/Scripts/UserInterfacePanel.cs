@@ -11,15 +11,19 @@ namespace BoardGameQuiz
 		private Label label;
 
 		public void Awake()
+		//private void OnEnable()
 		{
-			Debug.Log("TestUIToolkit");
-
 			document = GetComponent<UIDocument>();
 
 			button = document.rootVisualElement.Q("TestButton") as Button;
-			button.RegisterCallback<ClickEvent>(TestButtonClick);
+			button.RegisterCallback<ClickEvent>(OnPlayButtonClicked);
 
 			label = document.rootVisualElement.Q("Question") as Label;
+		}
+
+		private void OnDisable()
+		{
+			button.UnregisterCallback<ClickEvent>(OnPlayButtonClicked);
 		}
 
 		public void Initialize()
@@ -38,15 +42,9 @@ namespace BoardGameQuiz
 		}
 		*/
 
-		private void OnDisable()
+		private void OnPlayButtonClicked(ClickEvent evt)
 		{
-			button.UnregisterCallback<ClickEvent>(TestButtonClick);
-		}
-
-		private void TestButtonClick(ClickEvent evt)
-		{
-			Debug.Log("Test button");
-			//DisplayQuestion("Question");
+			EventManager.OnPlayClicked();
 		}
 	}
 }

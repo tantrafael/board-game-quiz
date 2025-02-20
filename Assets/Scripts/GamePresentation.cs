@@ -1,3 +1,5 @@
+using Newtonsoft.Json;
+using UnityEngine;
 using UnityEngine.Assertions;
 
 namespace BoardGameQuiz
@@ -6,7 +8,8 @@ namespace BoardGameQuiz
 	{
 		private GameBoard gameBoard;
 		private PlayingPieceMover playingPieceMover;
-		private UserInterfacePanel userInterfacePanel;
+		private QuizPresenter quizPresenter;
+		//private UserInterfacePanel userInterfacePanel;
 
 		/*
 		public void Initialize(GameBoard gameBoard, PlayingPieceMover playingPieceMover, GameState gameState)
@@ -18,6 +21,7 @@ namespace BoardGameQuiz
 			InitializePlayingPieceMover(gameState);
 		}
 		*/
+		/*
 		public void Initialize(GameBoard gameBoard, PlayingPieceMover playingPieceMover, UserInterfacePanel userInterfacePanel, GameState gameState)
 		{
 			this.gameBoard = gameBoard;
@@ -29,19 +33,40 @@ namespace BoardGameQuiz
 			InitializePlayingPieceMover(gameBoard, gameState);
 			InitializeUserInterfacePanel(gameState);
 		}
-
+		*/
 		/*
+		public void Initialize(GameBoard gameBoard, PlayingPieceMover playingPieceMover, GameState gameState)
+		{
+			this.gameBoard = gameBoard;
+			this.playingPieceMover = playingPieceMover;
+
+			InitializeGameBoard(gameState);
+			InitializePlayingPieceMover(gameBoard, gameState);
+		}
+		*/
+		public void Initialize(GameBoard gameBoard, PlayingPieceMover playingPieceMover, QuizPresenter quizPresenter, GameState gameState)
+		{
+			this.gameBoard = gameBoard;
+			this.playingPieceMover = playingPieceMover;
+			this.quizPresenter = quizPresenter;
+
+			InitializeGameBoard(gameState);
+			InitializePlayingPieceMover(gameBoard, gameState);
+			//InitializeQuizPresenter(quizPresenter, gameState);
+		}
+
 		public void Update(GameState gameState)
 		{
 			UpdatePlayingPieceMover(gameState);
-			//UpdateQuizPresenter(gameState);
+			UpdateQuizPresenter(gameState);
 		}
-		*/
+		/*
 		public void Update(GameState gameState)
 		{
 			UpdatePlayingPieceMover(gameState);
 			UpdateUserInterfacePanel(gameState);
 		}
+		*/
 
 		private void InitializeGameBoard(GameState gameState)
 		{
@@ -77,12 +102,21 @@ namespace BoardGameQuiz
 			}
 		}
 
+		/*
+		private void InitializeQuizPresenter(GameState gameState)
+		{
+			quizPresenter.Initialize(gameState);
+		}
+		*/
+
+		/*
 		private void InitializeUserInterfacePanel(GameState gameState)
 		{
 			Assert.IsNotNull(userInterfacePanel);
 
 			userInterfacePanel.Initialize();
 		}
+		*/
 
 		private void UpdatePlayingPieceMover(GameState gameState)
 		{
@@ -93,11 +127,30 @@ namespace BoardGameQuiz
 			playingPieceMover.UpdatePlayingPieces(playerStateTable);
 		}
 
+		private void UpdateQuizPresenter(GameState gameState)
+		{
+			Assert.IsNotNull(quizPresenter);
+
+			var activeQuizID = gameState.ActiveQuiz;
+
+			if (activeQuizID == null)
+			{
+				return;
+			}
+
+			var quizDataFile = Resources.Load<TextAsset>($"QuizData/{activeQuizID}");
+			var quizData = JsonConvert.DeserializeObject<QuizData>(quizDataFile.text);
+
+			quizPresenter.DisplayQuiz(quizData);
+		}
+
+		/*
 		private void UpdateUserInterfacePanel(GameState gameState)
 		{
 			var activeQuizID = gameState.ActiveQuiz;
 
 			userInterfacePanel.UpdateUserInterface(activeQuizID);
 		}
+		*/
 	}
 }

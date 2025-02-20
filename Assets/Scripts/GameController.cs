@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 namespace BoardGameQuiz
 {
@@ -9,13 +8,24 @@ namespace BoardGameQuiz
 		public TextAsset gameBoardLayoutFile;
 		public GameBoard gameBoard;
 		public PlayingPieceMover playingPieceMover;
-
-		public UserInterfacePanel userInterfacePanel;
-		//public GameObject testUIDocument;
+		public QuizPresenter quizPresenter;
+		//public UserInterfacePanel userInterfacePanel;
 
 		private GameLogic gameLogic = new();
 		private GamePresentation gamePresentation = new();
-		private UserInterfacePresentation userInterfacePresentation = new();
+		//private UserInterfacePresentation userInterfacePresentation = new();
+
+		/*
+		private void OnEnable()
+		{
+			EventManager.PlayClicked += EventManagerOnPlayClicked;
+		}
+
+		private void OnDisable()
+		{
+			EventManager.PlayClicked -= EventManagerOnPlayClicked;
+		}
+		*/
 
 		public void Start()
 		{
@@ -30,25 +40,39 @@ namespace BoardGameQuiz
 
 			var initialGameState = gameLogic.GetCurrentGameState();
 			//gamePresentation.Initialize(gameBoard, playingPieceMover, initialGameState);
-			gamePresentation.Initialize(gameBoard, playingPieceMover, userInterfacePanel, initialGameState);
+			gamePresentation.Initialize(gameBoard, playingPieceMover, quizPresenter, initialGameState);
+			//gamePresentation.Initialize(gameBoard, playingPieceMover, userInterfacePanel, initialGameState);
 
-			userInterfacePresentation.Initialize(userInterfacePanel, initialGameState);
+			//userInterfacePresentation.Initialize(userInterfacePanel, initialGameState);
 		}
 
-		public void TakeTurn()
+		public void PlayTurn()
 		{
+			Debug.Log("GameController::PLayTurn()");
+
 			gameLogic.PlayTurn();
 
 			var currentGameState = gameLogic.GetCurrentGameState();
 			gamePresentation.Update(currentGameState);
 
-			userInterfacePresentation.Update(currentGameState);
+			//userInterfacePresentation.Update(currentGameState);
 		}
 
+		/*
+		private void EventManagerOnPlayClicked()
+		{
+			Debug.Log("EventManagerOnPlayClicked()");
+
+			PlayTurn();
+		}
+		*/
+
+		/*
 		public void Test()
 		{
 			//SceneManager.LoadScene("Test", LoadSceneMode.Single);
 			SceneManager.LoadScene("Test", LoadSceneMode.Additive);
 		}
+		*/
 	}
 }
