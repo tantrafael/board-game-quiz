@@ -25,10 +25,12 @@ namespace BoardGameQuiz
 
 			gameStateHistory.Add(initialGameState);
 
+			/*
 			foreach (var gameState in gameStateHistory)
 			{
 				Debug.Log(gameState.ID);
 			}
+			*/
 		}
 
 		public GameState GetCurrentGameState()
@@ -36,6 +38,7 @@ namespace BoardGameQuiz
 			return gameStateHistory.Last();
 		}
 
+		//public void Update()
 		public void PlayTurn()
 		{
 			var currentGameState = gameStateHistory.Last();
@@ -44,6 +47,7 @@ namespace BoardGameQuiz
 
 			gameStateHistory.Add(updatedGameState);
 
+			/*
 			foreach (var gameState in gameStateHistory)
 			{
 				var (playerID, playerState) = gameState.PlayerStateTable.First();
@@ -52,24 +56,7 @@ namespace BoardGameQuiz
 			}
 
 			Debug.Log("--------------------------------------------------------------------------------");
-		}
-
-		private GameState PerformGameLogic(GameState inGameState)
-		{
-			var outGameState = inGameState.CloneJson();
-
-			// Make updates.
-			outGameState.ID = inGameState.ID + 1;
-
-			// Determine active player.
-			var activePlayerID = inGameState.PlayerStateTable.First().Key;
-
-			var currentPlayerState = inGameState.PlayerStateTable[activePlayerID];
-			var currentStepCount = currentPlayerState.StepCount;
-			var updatedStepCount = currentStepCount + Random.Range(1, 6);
-			outGameState.PlayerStateTable[activePlayerID].StepCount = updatedStepCount;
-
-			return outGameState;
+			*/
 		}
 
 		private GameBoardLayout CreateGameBoardLayout(TextAsset gameBoardLayoutFile)
@@ -103,13 +90,91 @@ namespace BoardGameQuiz
 
 			return playerState;
 		}
+		/*
 
-		private string GetPlayerInTurn(GameState gameState)
+		private GameState PerformGameLogic(GameState inGameState)
 		{
-			var playerStateTableElement = gameState.PlayerStateTable.First();
-			var playerID = playerStateTableElement.Key;
+			var outGameState = inGameState.CloneJson();
+
+			// Make updates.
+			outGameState.ID = inGameState.ID + 1;
+
+			// Determine active player.
+			var activePlayerID = inGameState.PlayerStateTable.First().Key;
+
+			var currentPlayerState = inGameState.PlayerStateTable[activePlayerID];
+			var currentStepCount = currentPlayerState.StepCount;
+			var updatedStepCount = currentStepCount + Random.Range(1, 6);
+			outGameState.PlayerStateTable[activePlayerID].StepCount = updatedStepCount;
+
+			return outGameState;
+		}
+		*/
+		private GameState PerformGameLogic(GameState gameState)
+		{
+			var updatedGameState = gameState.CloneJson();
+
+			updatedGameState.ID = gameState.ID + 1;
+
+			// Move player.
+			//MovePlayer(ref updatedGameState);
+			var (activePlayerID, updatedStepCount) = GetPlayerMovement(gameState);
+			updatedGameState.PlayerStateTable[activePlayerID].StepCount = updatedStepCount;
+
+			// Check special tiles.
+			var gameBoardLayout = gameState.GameBoardLayout;
+			var gameBoardTileCount = gameBoardLayout.TilePositions.Count;
+			var tileIndex = updatedStepCount % gameBoardTileCount;
+
+			var quizPlacement = gameBoardLayout.QuizLayout.Find(quizPlacement => quizPlacement.TileIndexes.Contains(tileIndex));
+
+			if (quizPlacement != null)
+			{
+				Debug.Log($"Quiz: {quizPlacement.ID}");
+				updatedGameState.ActiveQuiz = quizPlacement.ID;
+			}
+
+			return updatedGameState;
+		}
+
+		private string GetActivePlayer(GameState gameState)
+		{
+			var (playerID, playerState) = gameState.PlayerStateTable.First();
 
 			return playerID;
+		}
+
+		/*
+		private int MovePlayer(string playerID, GameState inGameState)
+		{
+			var currentPlayerState = inGameState.PlayerStateTable[playerID];
+			var currentStepCount = currentPlayerState.StepCount;
+			var updatedStepCount = currentStepCount + Random.Range(1, 6);
+
+			return updatedStepCount;
+		}
+		*/
+		/*
+		private void MovePlayer(ref GameState gameState)
+		{
+			var activePlayerID = GetActivePlayer(gameState);
+			var currentPlayerState = gameState.PlayerStateTable[activePlayerID];
+			var currentStepCount = currentPlayerState.StepCount;
+			var updatedStepCount = currentStepCount + Random.Range(1, 6);
+
+			gameState.PlayerStateTable[activePlayerID].StepCount = updatedStepCount;
+		}
+		*/
+
+		private (string, int) GetPlayerMovement(GameState gameState)
+		{
+			var activePlayerID = GetActivePlayer(gameState);
+			var currentPlayerState = gameState.PlayerStateTable[activePlayerID];
+			var currentStepCount = currentPlayerState.StepCount;
+			// TODO: Get step count interval from settings. Eliminate magic numbers.
+			var updatedStepCount = currentStepCount + Random.Range(1, 6);
+
+			return (activePlayerID, updatedStepCount);
 		}
 	}
 }

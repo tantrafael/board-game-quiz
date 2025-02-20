@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace BoardGameQuiz
 {
@@ -9,8 +10,12 @@ namespace BoardGameQuiz
 		public GameBoard gameBoard;
 		public PlayingPieceMover playingPieceMover;
 
+		public UserInterfacePanel userInterfacePanel;
+		//public GameObject testUIDocument;
+
 		private GameLogic gameLogic = new();
 		private GamePresentation gamePresentation = new();
+		private UserInterfacePresentation userInterfacePresentation = new();
 
 		public void Start()
 		{
@@ -24,18 +29,26 @@ namespace BoardGameQuiz
 			//gamePresentation.Initialize(gameBoard, playingPieceMover);
 
 			var initialGameState = gameLogic.GetCurrentGameState();
-			gamePresentation.Initialize(gameBoard, playingPieceMover, initialGameState);
+			//gamePresentation.Initialize(gameBoard, playingPieceMover, initialGameState);
+			gamePresentation.Initialize(gameBoard, playingPieceMover, userInterfacePanel, initialGameState);
+
+			userInterfacePresentation.Initialize(userInterfacePanel, initialGameState);
 		}
 
-		public void Update()
+		public void TakeTurn()
 		{
-			if (Input.GetButtonDown("Fire1"))
-			{
-				gameLogic.PlayTurn();
+			gameLogic.PlayTurn();
 
-				var currentGameState = gameLogic.GetCurrentGameState();
-				gamePresentation.Update(currentGameState);
-			}
+			var currentGameState = gameLogic.GetCurrentGameState();
+			gamePresentation.Update(currentGameState);
+
+			userInterfacePresentation.Update(currentGameState);
+		}
+
+		public void Test()
+		{
+			//SceneManager.LoadScene("Test", LoadSceneMode.Single);
+			SceneManager.LoadScene("Test", LoadSceneMode.Additive);
 		}
 	}
 }

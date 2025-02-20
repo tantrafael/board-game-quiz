@@ -7,20 +7,26 @@ namespace BoardGameQuiz
 {
 	public class PlayingPieceMover : MonoBehaviour
 	{
-		public GameBoard gameBoard;
+		//public GameBoard gameBoard;
 		public GameObject playingPieceAsset;
 		public float tileStepDuration;
 
+		private GameBoard gameBoard;
 		private Dictionary<string, PlayingPiecePresentationState> playingPieceTable = new();
+
+		public void Initialize(GameBoard gameBoard)
+		{
+			this.gameBoard = gameBoard;
+		}
 
 		public void AddPlayingPiece(string playerID, PlayerState playerState)
 		{
+			Assert.IsNotNull(gameBoard);
+			Assert.IsNotNull(playingPieceTable);
+
 			var playerTileIndex = playerState.StepCount % gameBoard.GetTotalTileCount();
 			var startPosition = gameBoard.GetWorldPosition(playerTileIndex);
 			var playingPiece = Instantiate(playingPieceAsset, startPosition, Quaternion.identity);
-
-			//Assert.IsNotNull(playingMarkers);
-			//playingMarkers.Add(playingMarker);
 
 			var playingPiecePresentationState = new PlayingPiecePresentationState
 			{
@@ -28,7 +34,6 @@ namespace BoardGameQuiz
 				PlayingPiece = playingPiece
 			};
 
-			Assert.IsNotNull(playingPieceTable);
 			playingPieceTable.Add(playerID, playingPiecePresentationState);
 		}
 
@@ -63,6 +68,8 @@ namespace BoardGameQuiz
 
 		private void MovePlayingPiece(string playerID, PlayerState playerState)
 		{
+			Assert.IsNotNull(gameBoard);
+
 			var playingPiecePresentationState = playingPieceTable[playerID];
 			var playingPiece = playingPiecePresentationState.PlayingPiece;
 			var deltaStepCount = playerState.StepCount - playingPiecePresentationState.StepCount;
@@ -90,7 +97,9 @@ namespace BoardGameQuiz
 
 		private void Animate(GameObject playingPiece, List<int> tileIndexSequence, GameBoard gameBoard, float tileStepDuration)
 		{
-			// TODO: Assert playing piece existence.
+			Assert.IsNotNull(gameBoard);
+			Assert.IsNotNull(playingPiece);
+
 			Sequence sequence = DOTween.Sequence();
 
 			foreach (var tileIndex in tileIndexSequence)

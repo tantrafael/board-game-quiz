@@ -21,7 +21,6 @@ namespace BoardGameQuiz
 
 		public Vector3 GetWorldPosition(int tileIndex)
 		{
-			// TODO: Assert gameBoardLayout exists and tileIndex within range.
 			Assert.IsNotNull(gameBoardLayout);
 			Assert.IsNotNull(gameBoardLayout.TilePositions);
 			Assert.IsTrue(tileIndex < gameBoardLayout.TilePositions.Count);
