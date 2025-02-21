@@ -8,7 +8,6 @@ namespace BoardGameQuiz
 {
 	public class PlayingPieceMover : MonoBehaviour
 	{
-		//public GameBoard gameBoard;
 		public GameObject playingPieceAsset;
 		public float tileStepDuration;
 

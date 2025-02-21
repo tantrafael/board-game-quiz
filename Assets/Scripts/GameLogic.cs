@@ -13,14 +13,12 @@ namespace BoardGameQuiz
 		{
 			var gameBoardLayout = CreateGameBoardLayout(gameBoardLayoutFile);
 			var playerStateTable = CreatePlayerStateTable(players);
-			//var playerInTurn = GetPlayerInTurn(playerStateTable);
 
 			var initialGameState = new GameState
 			{
 				ID = 0,
 				GameBoardLayout = gameBoardLayout,
 				PlayerStateTable = playerStateTable
-				//PlayerInTurn = playerInTurn
 			};
 
 			gameStateHistory.Add(initialGameState);
@@ -38,17 +36,6 @@ namespace BoardGameQuiz
 			var updatedGameState = PerformGameLogic(currentGameState);
 
 			gameStateHistory.Add(updatedGameState);
-
-			/*
-			foreach (var gameState in gameStateHistory)
-			{
-				var (playerID, playerState) = gameState.PlayerStateTable.First();
-				var stepCount = playerState.StepCount;
-				Debug.Log($"Game state ID: {gameState.ID}, Player ID: {playerID}, Step count: {stepCount}");
-			}
-
-			Debug.Log("--------------------------------------------------------------------------------");
-			*/
 		}
 
 		private GameBoardLayout CreateGameBoardLayout(TextAsset gameBoardLayoutFile)
@@ -89,33 +76,15 @@ namespace BoardGameQuiz
 			updatedGameState.ID = gameState.ID + 1;
 
 			// Move player.
-			//var (activePlayerID, updatedStepCount) = MovePlayer(ref updatedGameState);
 			var (activePlayerID, updatedStepCount) = GetPlayerMovement(gameState);
 			updatedGameState.PlayerStateTable[activePlayerID].StepCount = updatedStepCount;
 
 			// Check for quiz at updated position.
-			//HandlePlayerPosition(ref updatedGameState, updatedStepCount);
 			var quizID = CheckForQuiz(gameState, updatedStepCount);
 			updatedGameState.ActiveQuiz = quizID;
 
 			return updatedGameState;
 		}
-
-		/*
-		private (string, int) MovePlayer(ref GameState gameState)
-		{
-			var activePlayerID = GetActivePlayer(gameState);
-			var currentPlayerState = gameState.PlayerStateTable[activePlayerID];
-			var currentStepCount = currentPlayerState.StepCount;
-
-			// TODO: Get step count interval from settings. Eliminate magic numbers.
-			var updatedStepCount = currentStepCount + Random.Range(1, 6);
-
-			gameState.PlayerStateTable[activePlayerID].StepCount = updatedStepCount;
-
-			return (activePlayerID, updatedStepCount);
-		}
-		*/
 
 		private (string, int) GetPlayerMovement(GameState gameState)
 		{
@@ -131,24 +100,12 @@ namespace BoardGameQuiz
 
 		private string GetActivePlayer(GameState gameState)
 		{
+			// Mock result returning first player.
 			var (playerID, playerState) = gameState.PlayerStateTable.First();
 
 			return playerID;
 		}
 
-		/*
-		private void HandlePlayerPosition(ref GameState gameState, int updatedStepCount)
-		{
-			var gameBoardLayout = gameState.GameBoardLayout;
-			var gameBoardTileCount = gameBoardLayout.TilePositions.Count;
-			var tileIndex = updatedStepCount % gameBoardTileCount;
-
-			var quizPlacement =
-				gameBoardLayout.QuizLayout.Find(quizPlacement => quizPlacement.TileIndexes.Contains(tileIndex));
-
-			gameState.ActiveQuiz = quizPlacement.ID;
-		}
-		*/
 		private string CheckForQuiz(GameState gameState, int updatedStepCount)
 		{
 			var gameBoardLayout = gameState.GameBoardLayout;

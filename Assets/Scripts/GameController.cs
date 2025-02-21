@@ -30,8 +30,6 @@ namespace BoardGameQuiz
 
 		public void PlayTurn()
 		{
-			Debug.Log("GameController::PLayTurn()");
-
 			gameLogic.PlayTurn();
 
 			var currentGameState = gameLogic.GetCurrentGameState();

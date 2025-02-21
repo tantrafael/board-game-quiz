@@ -57,10 +57,9 @@ namespace BoardGameQuiz
 
 			foreach (var gridPosition in gameBoardLayout.TilePositions)
 			{
-				//Vector3 worldPosition = (Vector3Int)gridPosition;
-				//var worldPosition = new Vector3(gridPosition.x, 0.0f, gridPosition.y) * gridCellSize;
 				var worldPosition = GetWorldPosition(gridPosition, gridCellSize);
 				var tileInstance = Instantiate(tile, worldPosition, Quaternion.identity);
+
 				tiles.Add(tileInstance);
 			}
 
@@ -69,6 +68,7 @@ namespace BoardGameQuiz
 
 		private void SpecializeTiles(GameBoardLayout gameBoardLayout, List<GameObject> tileInstances)
 		{
+			// TODO: Get tile materials from settings.
 			var colorTable = new Dictionary<QuizType, Color>
 			{
 				{ QuizType.Text, Color.red },
@@ -106,8 +106,8 @@ namespace BoardGameQuiz
 				Assert.IsTrue(tileIndex < totalTileCount);
 
 				var tileInstance = tileInstances[tileIndex];
-				//var tileRenderer = tileInstance.GetComponent<Renderer>();
-				//var tileRenderer = tileInstance.transform.GetChild(0).gameObject.GetComponent<Renderer>();
+
+				// TODO: Clean up getting child and magic number.
 				var tileModel = tileInstance.transform.GetChild(0).gameObject;
 				var tileRenderer = tileModel.GetComponent<Renderer>();
 
