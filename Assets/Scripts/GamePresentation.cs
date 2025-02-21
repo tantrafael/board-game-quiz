@@ -62,7 +62,9 @@ namespace BoardGameQuiz
 
 		private void InitializeCameraDirector(PlayingPieceMover playingPieceMover)
 		{
-			cameraDirector.Initialize();
+			Assert.IsNotNull(cameraDirector);
+
+			cameraDirector.Initialize(playingPieceMover);
 		}
 
 		private void UpdatePlayingPieceMover(GameState gameState)

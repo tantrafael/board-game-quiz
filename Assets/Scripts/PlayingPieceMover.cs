@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using DG.Tweening;
 using UnityEngine.Assertions;
@@ -43,6 +44,15 @@ namespace BoardGameQuiz
 			{
 				UpdatePlayingPiece(playerID, playerState);
 			}
+		}
+
+		public GameObject GetActivePlayingPiece()
+		{
+			var (playerID, playingPiecePresentationState) = playingPieceTable.First();
+
+			var activePlayingPiece = playingPiecePresentationState.PlayingPiece;
+
+			return activePlayingPiece;
 		}
 
 		private void UpdatePlayingPiece(string playerID, PlayerState playerState)
