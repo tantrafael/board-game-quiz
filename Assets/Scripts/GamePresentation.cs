@@ -9,41 +9,6 @@ namespace BoardGameQuiz
 		private GameBoard gameBoard;
 		private PlayingPieceMover playingPieceMover;
 		private QuizPresenter quizPresenter;
-		//private UserInterfacePanel userInterfacePanel;
-
-		/*
-		public void Initialize(GameBoard gameBoard, PlayingPieceMover playingPieceMover, GameState gameState)
-		{
-			this.gameBoard = gameBoard;
-			this.playingPieceMover = playingPieceMover;
-
-			InitializeGameBoard(gameState);
-			InitializePlayingPieceMover(gameState);
-		}
-		*/
-		/*
-		public void Initialize(GameBoard gameBoard, PlayingPieceMover playingPieceMover, UserInterfacePanel userInterfacePanel, GameState gameState)
-		{
-			this.gameBoard = gameBoard;
-			this.playingPieceMover = playingPieceMover;
-			this.userInterfacePanel = userInterfacePanel;
-
-			InitializeGameBoard(gameState);
-			//InitializePlayingPieceMover(gameState);
-			InitializePlayingPieceMover(gameBoard, gameState);
-			InitializeUserInterfacePanel(gameState);
-		}
-		*/
-		/*
-		public void Initialize(GameBoard gameBoard, PlayingPieceMover playingPieceMover, GameState gameState)
-		{
-			this.gameBoard = gameBoard;
-			this.playingPieceMover = playingPieceMover;
-
-			InitializeGameBoard(gameState);
-			InitializePlayingPieceMover(gameBoard, gameState);
-		}
-		*/
 		public void Initialize(GameBoard gameBoard, PlayingPieceMover playingPieceMover, QuizPresenter quizPresenter, GameState gameState)
 		{
 			this.gameBoard = gameBoard;
@@ -60,13 +25,6 @@ namespace BoardGameQuiz
 			UpdatePlayingPieceMover(gameState);
 			UpdateQuizPresenter(gameState);
 		}
-		/*
-		public void Update(GameState gameState)
-		{
-			UpdatePlayingPieceMover(gameState);
-			UpdateUserInterfacePanel(gameState);
-		}
-		*/
 
 		private void InitializeGameBoard(GameState gameState)
 		{
@@ -77,17 +35,6 @@ namespace BoardGameQuiz
 			gameBoard.Initialize(gameBoardLayout);
 		}
 
-		/*
-		private void InitializePlayingPieceMover(GameState gameState)
-		{
-			Assert.IsNotNull(playingPieceMover);
-
-			foreach (var (playerID, playerState) in gameState.PlayerStateTable)
-			{
-				playingPieceMover.AddPlayingPiece(playerID, playerState);
-			}
-		}
-		*/
 		private void InitializePlayingPieceMover(GameBoard gameBoard, GameState gameState)
 		{
 			Assert.IsNotNull(playingPieceMover);
@@ -106,15 +53,6 @@ namespace BoardGameQuiz
 		private void InitializeQuizPresenter(GameState gameState)
 		{
 			quizPresenter.Initialize(gameState);
-		}
-		*/
-
-		/*
-		private void InitializeUserInterfacePanel(GameState gameState)
-		{
-			Assert.IsNotNull(userInterfacePanel);
-
-			userInterfacePanel.Initialize();
 		}
 		*/
 
@@ -138,19 +76,10 @@ namespace BoardGameQuiz
 				return;
 			}
 
-			var quizDataFile = Resources.Load<TextAsset>($"QuizData/{activeQuizID}");
-			var quizData = JsonConvert.DeserializeObject<QuizData>(quizDataFile.text);
+			var quizFile = Resources.Load<TextAsset>($"QuizData/{activeQuizID}");
+			var quiz = JsonConvert.DeserializeObject<Quiz>(quizFile.text);
 
-			quizPresenter.DisplayQuiz(quizData);
+			quizPresenter.DisplayQuiz(quiz);
 		}
-
-		/*
-		private void UpdateUserInterfacePanel(GameState gameState)
-		{
-			var activeQuizID = gameState.ActiveQuiz;
-
-			userInterfacePanel.UpdateUserInterface(activeQuizID);
-		}
-		*/
 	}
 }

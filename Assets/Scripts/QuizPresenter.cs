@@ -9,7 +9,8 @@ namespace BoardGameQuiz
 			Debug.Log("QuizPresenter::Awake()");
 		}
 
-		public void DisplayQuiz(QuizData quizData)
+		//public void DisplayQuiz(QuizData quizData)
+		public void DisplayQuiz(Quiz quizData)
 		{
 			Debug.Log($"QuizPresenter::DisplayQuiz()");
 			Debug.Log(quizData.Question);
