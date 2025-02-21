@@ -99,8 +99,12 @@ namespace BoardGameQuiz
 
 		void SpecializeQuizTiles(List<GameObject> tileInstances, QuizPlacement quizPlacement, Color color)
 		{
+			var totalTileCount = tileInstances.Count;
+
 			foreach (var tileIndex in quizPlacement.TileIndexes)
 			{
+				Assert.IsTrue(tileIndex < totalTileCount);
+
 				var tileInstance = tileInstances[tileIndex];
 				//var tileRenderer = tileInstance.GetComponent<Renderer>();
 				//var tileRenderer = tileInstance.transform.GetChild(0).gameObject.GetComponent<Renderer>();
