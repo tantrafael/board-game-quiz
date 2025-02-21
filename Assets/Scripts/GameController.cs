@@ -9,6 +9,7 @@ namespace BoardGameQuiz
 		public GameBoard gameBoard;
 		public PlayingPieceMover playingPieceMover;
 		public QuizPresenter quizPresenter;
+		public CameraDirector cameraDirector;
 
 		private GameLogic gameLogic = new();
 		private GamePresentation gamePresentation = new();
@@ -24,7 +25,7 @@ namespace BoardGameQuiz
 			gameLogic.Initialize(gameBoardLayoutFile, userIDs);
 
 			var initialGameState = gameLogic.GetCurrentGameState();
-			gamePresentation.Initialize(gameBoard, playingPieceMover, quizPresenter, initialGameState);
+			gamePresentation.Initialize(gameBoard, playingPieceMover, quizPresenter, cameraDirector, initialGameState);
 		}
 
 		public void PlayTurn()

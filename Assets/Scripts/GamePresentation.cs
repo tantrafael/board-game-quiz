@@ -9,15 +9,19 @@ namespace BoardGameQuiz
 		private GameBoard gameBoard;
 		private PlayingPieceMover playingPieceMover;
 		private QuizPresenter quizPresenter;
-		public void Initialize(GameBoard gameBoard, PlayingPieceMover playingPieceMover, QuizPresenter quizPresenter, GameState gameState)
+		private CameraDirector cameraDirector;
+
+		public void Initialize(GameBoard gameBoard, PlayingPieceMover playingPieceMover, QuizPresenter quizPresenter, CameraDirector cameraDirector, GameState gameState)
 		{
 			this.gameBoard = gameBoard;
 			this.playingPieceMover = playingPieceMover;
 			this.quizPresenter = quizPresenter;
+			this.cameraDirector = cameraDirector;
 
 			InitializeGameBoard(gameState);
 			InitializePlayingPieceMover(gameBoard, gameState);
 			//InitializeQuizPresenter(quizPresenter, gameState);
+			InitializeCameraDirector(playingPieceMover);
 		}
 
 		public void Update(GameState gameState)
@@ -55,6 +59,11 @@ namespace BoardGameQuiz
 			quizPresenter.Initialize(gameState);
 		}
 		*/
+
+		private void InitializeCameraDirector(PlayingPieceMover playingPieceMover)
+		{
+			cameraDirector.Initialize();
+		}
 
 		private void UpdatePlayingPieceMover(GameState gameState)
 		{
