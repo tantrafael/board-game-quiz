@@ -14,6 +14,16 @@ namespace BoardGameQuiz
 		private GameLogic gameLogic = new();
 		private GamePresentation gamePresentation = new();
 
+		private void OnEnable()
+		{
+			EventManager.AnswerSelected += RegisterAnswer;
+		}
+
+		private void OnDisable()
+		{
+			EventManager.AnswerSelected -= RegisterAnswer;
+		}
+
 		public void Start()
 		{
 			// Mock users.
@@ -34,6 +44,13 @@ namespace BoardGameQuiz
 
 			var currentGameState = gameLogic.GetCurrentGameState();
 			gamePresentation.Update(currentGameState);
+		}
+
+		private void RegisterAnswer(int answerIndex)
+		{
+			Debug.Log($"GameController::RegisterAnswer {answerIndex}");
+
+			gameLogic.RegisterAnswer(answerIndex);
 		}
 	}
 }

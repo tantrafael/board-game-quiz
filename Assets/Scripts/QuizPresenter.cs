@@ -42,6 +42,8 @@ namespace BoardGameQuiz
 		private void SelectAnswer(int answerIndex)
 		{
 			Debug.Log($"Selected answer index: {answerIndex}");
+
+			EventManager.OnAnswerSelected(answerIndex);
 		}
 	}
 }

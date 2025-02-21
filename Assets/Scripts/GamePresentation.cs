@@ -20,7 +20,7 @@ namespace BoardGameQuiz
 
 			InitializeGameBoard(gameState);
 			InitializePlayingPieceMover(gameBoard, gameState);
-			//InitializeQuizPresenter(quizPresenter, gameState);
+			//InitializeQuizPresenter();
 			InitializeCameraDirector(playingPieceMover);
 		}
 

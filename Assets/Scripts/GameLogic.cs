@@ -31,11 +31,14 @@ namespace BoardGameQuiz
 
 		public void PlayTurn()
 		{
-			var currentGameState = gameStateHistory.Last();
-
+			var currentGameState = GetCurrentGameState();
 			var updatedGameState = PerformGameLogic(currentGameState);
-
 			gameStateHistory.Add(updatedGameState);
+		}
+
+		public void RegisterAnswer(int answerIndex)
+		{
+			// TODO: Create a new game state with record of the answer. Add it the game state history.
 		}
 
 		private GameBoardLayout CreateGameBoardLayout(TextAsset gameBoardLayoutFile)
